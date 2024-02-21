@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add the field prioridad to the kanban view -->
+    <record id="view_task_kanban_aden" model="ir.ui.view">
+        <field name="name">project.task.kanban.aden</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//div[hasclass('oe_kanban_bottom_right')]" position="inside">
+                <group>
+                    <field name="task_priority" />
+
+                    <!-- agrego el equipo de forma invisible para que:
+                    cuando se asigna un usuario a una task en va lista kanban,
+                    tambien se le asigne el equipo,
+                    ya que si la vista kanban no tiene el campo de team,
+                    no va a asignar equipo a la task -->
+                    <field name="team_id" invisible="1"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//div[hasclass('o_kanban_record_top')]" position="inside">
+                <field name="stage_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add field prioridad to the form view -->
+    <record id="view_task_form2_aden" model="ir.ui.view">
+        <field name="name">project.task.form.aden</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='user_ids']" position="before">
+                <field name="id" string="ID" readonly="1"/>
+            </xpath>
+
+            <field name="partner_id" position="after">
+                <field name="team_id"/>
+            </field>
+
+            <!-- shows the priority after the user_ids -->
+            <field name="user_ids" position="after">
+                <field name="task_priority"/>
+
+                <!-- solo mostrar categorias que tengan el active en True -->
+                <field
+                name="category_id"
+                options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"
+                />
+
+                <!-- solo se muestran las subcategorias que estan asociadas a la categoria seleccionada
+                solo mostrar subcategorias que tengan el active en True
+                si no hay una categoria seleccionada, hacer el campo subcategoria invisible
+                no permite ir a ver el form del modelo subcategoria con el options -->
+                <field
+                name="subcategory_id"
+                domain="[('category_id', '=', category_id)]"
+                invisible= "category_id == False"
+                options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"
+                />
+
+            </field>
+
+            <!-- agrega una pestaña extra llamada recursos -->
+            <xpath expr="//page[@name='extra_info']" position="after">
+                <page name="task_resources" string="Recursos">
+                    <field name="resource_ids"/>
+                </page>
+
+                <page name="task_reviews" string="Revisiones">
+                    <field name="task_review_ids"/>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Add field prioridad to the list view -->
+    <record id="project_task_view_tree_main_base_aden" model="ir.ui.view">
+        <field name="name">project.task.view.tree.main.base.aden</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_view_tree_main_base"/>
+        <field name="arch" type="xml">
+
+            <field name="user_ids" position="before">
+                <field name="team_id"/>
+            </field>
+
+            <field name="user_ids" position="after">
+                <field name="task_priority"/>
+                <field name="category_id"/>
+                <field name="subcategory_id"/>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>

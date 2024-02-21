@@ -1,31 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-odoo-proyectos
+  name: odoo-gke
   labels:
-    app: test-odoo-proyectos
+    app: odoo-gke
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-odoo-proyectos
+      app: odoo-gke
   template:
     metadata:
       labels:
-        app: test-odoo-proyectos
+        app: odoo-gke
     spec:
       containers:
-      - name: test-odoo-proyectos
+      - name: odoo-gke
         image: odoo
         ports:
         - containerPort: 8069
         securityContext:
-          #allowPrivilegeEscalation: false
           privileged: true
-          runAsUser: 0
-          #runAsGroup: 3000
-          #fsGroup: 2000
-          #readOnlyRootFilesystem: false
+          runAsUser: 0 
         env:
         - name: HOST
           #value: 35.198.22.242 ---- IP Publica Cloud SQL instancia Odoo17
@@ -66,62 +62,7 @@ spec:
       - name: test-odoo-pm-config
         configMap:
           name: test-odoo-pm-config
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-test-odoo-proyectos-01
-  labels:
-    type: local
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 30Gi
-  hostPath:
-    path: /data/pv-data/
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-test-odoo-proyectos-01
-  namespace: default
-  labels:
-    app: test-odoo-proyectos
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-test-odoo-proyectos-02
-  namespace: default
-  labels:
-    app: test-odoo-proyectos
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-test-odoo-proyectos-03
-  namespace: default
-  labels:
-    app: test-odoo-proyectos
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Gi
+
 ---
 # Dentro del ConfigMap tenemos que cargar todos los parametros del odoo.conf
 apiVersion: v1

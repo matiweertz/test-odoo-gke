@@ -1,0 +1,56 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-test-odoo-proyectos-01
+  labels:
+    type: local
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 30Gi
+  hostPath:
+    path: /data/pv-data/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-test-odoo-proyectos-01
+  namespace: default
+  labels:
+    app: test-odoo-proyectos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-test-odoo-proyectos-02
+  namespace: default
+  labels:
+    app: test-odoo-proyectos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-test-odoo-proyectos-03
+  namespace: default
+  labels:
+    app: test-odoo-proyectos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi

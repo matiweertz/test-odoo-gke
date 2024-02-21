@@ -34,8 +34,6 @@ spec:
           value: "https"
         - name: ODOO_PORT
           value: "443"
-        #- name: addons_path
-        #  value: /mnt/extra-addons
         volumeMounts:
         - name: pv-odoo-gke-01
           mountPath: /mnt/extra-addons

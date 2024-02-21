@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: odoo-gke-service
   labels:
-    app: test-odoo-proyectos
+    app: odoo-gke
 spec:
   selector:
-    app: test-odoo-proyectos
+    app: odoo-gke
   ports:
     - name: http
 #    - protocol: TCP

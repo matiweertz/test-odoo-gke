@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: test-odoo-pm-config
+  name: odoo-gke-config
 data:
   odoo.conf: |
     [options]

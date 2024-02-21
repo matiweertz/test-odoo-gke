@@ -37,28 +37,28 @@ spec:
         #- name: addons_path
         #  value: /mnt/extra-addons
         volumeMounts:
-        - name: pv-test-odoo-pm-01
+        - name: pv-odoo-gke-01
           mountPath: /mnt/extra-addons
           subPath: extra-addons
-        - name: pv-test-odoo-pm-02
+        - name: pv-odoo-gke-02
           mountPath: /etc/odoo
           subPath: odoo
-        - name: pv-test-odoo-pm-03
+        - name: pv-odoo-gke-03
           mountPath: /root
           subPath: root
-        - name: test-odoo-pm-config
+        - name: odoo-gke-config
           mountPath: /etc/odoo/odoo.conf
           subPath: odoo.conf
       volumes:
-      - name: pv-test-odoo-pm-01
+      - name: pv-odoo-gke-01
         persistentVolumeClaim:
-          claimName: pvc-test-odoo-proyectos-01
-      - name: pv-test-odoo-pm-02
+          claimName: pvc-odoo-gke-01
+      - name: pv-odoo-gke-02
         persistentVolumeClaim:
-          claimName: pvc-test-odoo-proyectos-02
-      - name: pv-test-odoo-pm-03
+          claimName: pvc-odoo-gke-02
+      - name: pv-odoo-gke-03
         persistentVolumeClaim:
-          claimName: pvc-test-odoo-proyectos-03
-      - name: test-odoo-pm-config
+          claimName: pvc-odoo-gke-03
+      - name: odoo-gke-config
         configMap:
-          name: test-odoo-pm-config
+          name: odoo-gke-config

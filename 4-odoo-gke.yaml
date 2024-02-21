@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: odoo-gke
-        image: odoo
+        image: gcr.io/odoo-erp-calendar/matiweertz/test-odoo-gke:v1
         ports:
         - containerPort: 8069
         securityContext:

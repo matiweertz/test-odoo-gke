@@ -1,0 +1,14 @@
+# Dentro del ConfigMap tenemos que cargar todos los parametros del odoo.conf
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-odoo-pm-config
+data:
+  odoo.conf: |
+    [options]
+    addons_path = /mnt/extra-addons
+    logfile = /var/log/odoo/openerp-server.log
+    log-level = error
+    logrotate = False
+    secure = True
+    proxy_mode = True

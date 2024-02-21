@@ -27,9 +27,9 @@ spec:
           #value: 35.198.22.242 ---- IP Publica Cloud SQL instancia Odoo17
           value: 10.68.48.28 
         - name: USER
-          value: odoo
+          value: gke
         - name: PASSWORD
-          value: Naipa1Xo-test
+          value: 3(\^`{-&?nxm-n(l
         - name: ODOO_PROTOCOL
           value: "https"
         - name: ODOO_PORT

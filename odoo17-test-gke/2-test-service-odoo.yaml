@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-odoo-proyectos-service
+  labels:
+    app: test-odoo-proyectos
+spec:
+  selector:
+    app: test-odoo-proyectos
+  ports:
+    - name: http
+#    - protocol: TCP
+      port: 8069
+      targetPort: 8069
+#    - name: http1
+#    - protocol: TCP
+#      port: 80
+#      targetPort: 8069
+#    - name: https
+ #   - protocol: TCP
+#      port: 443
+#      targetPort: 8069

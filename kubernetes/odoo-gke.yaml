@@ -65,7 +65,7 @@ metadata:
   labels:
     app: odoo-gke
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: odoo-gke

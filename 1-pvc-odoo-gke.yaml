@@ -13,20 +13,20 @@ spec:
   hostPath:
     path: /data/pv-data/
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-odoo-gke-01
-  namespace: default
-  labels:
-    app: odoo-gke
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
----
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: pvc-odoo-gke-01
+#  namespace: default
+#  labels:
+#    app: odoo-gke
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 5Gi
+#---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

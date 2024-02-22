@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: odoo-gke
-        image: gcr.io/odoo-erp-calendar/matiweertz/test-odoo-gke:v1
+        image: gcr.io/odoo-erp-calendar/matiweertz/test-odoo-gke:1.1
         ports:
         - containerPort: 8069
         securityContext:
@@ -35,9 +35,9 @@ spec:
         - name: ODOO_PORT
           value: "443"
         volumeMounts:
-        - name: pv-odoo-gke-01
-          mountPath: /mnt/extra-addons
-          subPath: extra-addons
+#        - name: pv-odoo-gke-01
+#          mountPath: /mnt/extra-addons
+#          subPath: extra-addons
         - name: pv-odoo-gke-02
           mountPath: /etc/odoo
           subPath: odoo
@@ -48,9 +48,9 @@ spec:
           mountPath: /etc/odoo/odoo.conf
           subPath: odoo.conf
       volumes:
-      - name: pv-odoo-gke-01
-        persistentVolumeClaim:
-          claimName: pvc-odoo-gke-01
+#      - name: pv-odoo-gke-01
+#        persistentVolumeClaim:
+#          claimName: pvc-odoo-gke-01
       - name: pv-odoo-gke-02
         persistentVolumeClaim:
           claimName: pvc-odoo-gke-02

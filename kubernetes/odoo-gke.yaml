@@ -1,0 +1,134 @@
+# CREAMOS LOS DISCOS 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: odoo-gke-01
+  labels:
+    type: local
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 15Gi
+  hostPath:
+    path: /data/pv-data/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-odoo-gke-02
+  namespace: default
+  labels:
+    app: odoo-gke
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-odoo-gke-03
+  namespace: default
+  labels:
+    app: odoo-gke
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+# CREAMOS EL CONFIGMAP PARA EL ODOO.CONF
+# Dentro del ConfigMap tenemos que cargar todos los parametros del odoo.conf
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: odoo-gke-config
+data:
+  odoo.conf: |
+    [options]
+    addons_path = /mnt/extra-addons
+    logfile = /var/log/odoo/openerp-server.log
+    log-level = error
+    logrotate = False
+    secure = True
+    proxy_mode = True
+---
+# CREAMOS EL POD DE ODOO
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-gke
+  labels:
+    app: odoo-gke
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo-gke
+  template:
+    metadata:
+      labels:
+        app: odoo-gke
+    spec:
+      containers:
+      - name: odoo-gke
+        image: gcr.io/odoo-erp-calendar/matiweertz/test-odoo-gke:1.1
+        ports:
+        - containerPort: 8069
+        securityContext:
+          privileged: true
+          runAsUser: 0 
+        env:
+        - name: HOST
+          #value: 35.198.22.242 ---- IP Publica Cloud SQL instancia Odoo17
+          value: 10.68.48.28 
+        - name: USER
+          value: gke
+        - name: PASSWORD
+          value: 3(\^`{-&?nxm-n(l
+        - name: ODOO_PROTOCOL
+          value: "https"
+        - name: ODOO_PORT
+          value: "443"
+        volumeMounts:
+        - name: pv-odoo-gke-02
+          mountPath: /etc/odoo
+          subPath: odoo
+        - name: pv-odoo-gke-03
+          mountPath: /root
+          subPath: root
+        - name: odoo-gke-config
+          mountPath: /etc/odoo/odoo.conf
+          subPath: odoo.conf
+      volumes:
+      - name: pv-odoo-gke-02
+        persistentVolumeClaim:
+          claimName: pvc-odoo-gke-02
+      - name: pv-odoo-gke-03
+        persistentVolumeClaim:
+          claimName: pvc-odoo-gke-03
+      - name: odoo-gke-config
+        configMap:
+          name: odoo-gke-config
+# EXPONEMOS EL POD CON UN SERVICIO DE LOAD BALANCER
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "odoo-gke-service"
+  namespace: "default"
+  labels:
+    app: "odoo-gke"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 8069
+    targetPort: 8069
+  selector:
+    app: "odoo-gke"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
